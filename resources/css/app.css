@@ -9,7 +9,7 @@
 
 @theme {
     --font-sans:
-        'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 
@@ -61,75 +61,82 @@
     --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/*
+ * NyumbaHub brand theme.
+ * Values reference Tailwind v4's built-in emerald/amber/stone/red/sky
+ * scales (exposed as --color-* vars once 'tailwindcss' is imported above),
+ * so bg-emerald-700, text-amber-600 etc. anywhere in the app line up
+ * exactly with these semantic tokens — no hand-picked hex to keep in sync.
+ */
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.87 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
+    --background: var(--color-stone-50);
+    --foreground: var(--color-stone-900);
+    --card: var(--color-white);
+    --card-foreground: var(--color-stone-900);
+    --popover: var(--color-white);
+    --popover-foreground: var(--color-stone-900);
+    --primary: var(--color-emerald-700);
+    --primary-foreground: var(--color-white);
+    --secondary: var(--color-stone-100);
+    --secondary-foreground: var(--color-emerald-800);
+    --muted: var(--color-stone-100);
+    --muted-foreground: var(--color-stone-500);
+    --accent: var(--color-emerald-50);
+    --accent-foreground: var(--color-emerald-800);
+    --destructive: var(--color-red-600);
+    --destructive-foreground: var(--color-white);
+    --border: var(--color-stone-200);
+    --input: var(--color-stone-200);
+    --ring: var(--color-emerald-500);
+    --chart-1: var(--color-emerald-600);
+    --chart-2: var(--color-amber-500);
+    --chart-3: var(--color-sky-600);
+    --chart-4: var(--color-emerald-300);
+    --chart-5: var(--color-amber-700);
     --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.87 0 0);
+    --sidebar: var(--color-white);
+    --sidebar-foreground: var(--color-stone-900);
+    --sidebar-primary: var(--color-emerald-700);
+    --sidebar-primary-foreground: var(--color-white);
+    --sidebar-accent: var(--color-emerald-50);
+    --sidebar-accent-foreground: var(--color-emerald-800);
+    --sidebar-border: var(--color-stone-200);
+    --sidebar-ring: var(--color-emerald-500);
 }
 
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.145 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.145 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.985 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.396 0.141 25.723);
-    --destructive-foreground: oklch(0.637 0.237 25.331);
-    --border: oklch(0.269 0 0);
-    --input: oklch(0.269 0 0);
-    --ring: oklch(0.439 0 0);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.985 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(0.269 0 0);
-    --sidebar-ring: oklch(0.439 0 0);
+    --background: var(--color-emerald-950);
+    --foreground: var(--color-emerald-50);
+    --card: var(--color-emerald-900);
+    --card-foreground: var(--color-emerald-50);
+    --popover: var(--color-emerald-900);
+    --popover-foreground: var(--color-emerald-50);
+    --primary: var(--color-emerald-400);
+    --primary-foreground: var(--color-emerald-950);
+    --secondary: var(--color-emerald-800);
+    --secondary-foreground: var(--color-emerald-50);
+    --muted: var(--color-emerald-800);
+    --muted-foreground: var(--color-emerald-300);
+    --accent: var(--color-emerald-800);
+    --accent-foreground: var(--color-emerald-100);
+    --destructive: var(--color-red-500);
+    --destructive-foreground: var(--color-white);
+    --border: var(--color-emerald-800);
+    --input: var(--color-emerald-800);
+    --ring: var(--color-emerald-400);
+    --chart-1: var(--color-emerald-400);
+    --chart-2: var(--color-amber-400);
+    --chart-3: var(--color-sky-400);
+    --chart-4: var(--color-emerald-200);
+    --chart-5: var(--color-amber-300);
+    --sidebar: var(--color-emerald-900);
+    --sidebar-foreground: var(--color-emerald-50);
+    --sidebar-primary: var(--color-emerald-400);
+    --sidebar-primary-foreground: var(--color-emerald-950);
+    --sidebar-accent: var(--color-emerald-800);
+    --sidebar-accent-foreground: var(--color-emerald-100);
+    --sidebar-border: var(--color-emerald-800);
+    --sidebar-ring: var(--color-emerald-400);
 }
 
 @layer base {
