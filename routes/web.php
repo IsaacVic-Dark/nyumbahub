@@ -25,5 +25,14 @@ Route::inertia('alerts', 'app/alerts')->name('alerts');
 Route::inertia('notifications', 'app/notifications')->name('notifications');
 Route::inertia('profile', 'app/profile')->name('profile');
 Route::inertia('messages', 'app/messages')->name('messages');
+Route::inertia('map', 'app/map')->name('map');
+Route::inertia('safety', 'app/safety')->name('safety');
+Route::inertia('help', 'app/help')->name('help');
+Route::inertia('states', 'app/states')->name('states');
+
+// Top-level (not under 'app/') so app.tsx's layout resolver falls through to
+// the default AppLayout/sidebar shell instead of the consumer NyumbaLayout —
+// this is a back-office view, not a consumer-facing page.
+Route::inertia('admin', 'admin')->name('admin');
 
 require __DIR__.'/settings.php';
