@@ -38,4 +38,18 @@ export interface Listing {
     badges: VerificationBadge[];
     near: string;
     note: string;
+    scores: Record<string, number>;
+}
+
+export interface ConfirmationEntry {
+    who: string;
+    when: string;
+    text: string;
+    helpful: number;
+}
+
+export interface ConditionItem {
+    label: string;
+    score: number;
+    note: string;
 }
