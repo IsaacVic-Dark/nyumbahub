@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\EstateController;
 use App\Http\Controllers\Api\FlaggedContentController;
 use App\Http\Controllers\Api\ListingCommentController;
 use App\Http\Controllers\Api\ListingConditionController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ListingController;
 use App\Http\Controllers\Api\ListingEvidenceController;
 use App\Http\Controllers\Api\ListingMediaController;
@@ -31,6 +32,13 @@ use Illuminate\Support\Facades\Route;
 | Shallow nesting: a resource's index/store lives under its parent in the
 | URL; show/update/destroy/actions address the resource directly.
 */
+
+// --- Auth (token-issuing; for Postman / mobile) --------------------------
+Route::prefix('auth')->group(function () {
+   Route::post('register', [AuthController::class, 'register'])->middleware('throttle:6,1');
+   Route::post('login', [AuthController::class, 'login'])->middleware('throttle:login');
+   Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+});
 
 Route::get('/me', fn () => auth()->user())->middleware('auth:sanctum');
 
