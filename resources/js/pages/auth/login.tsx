@@ -125,7 +125,7 @@ export default function Login({ status, canResetPassword }: Props) {
                     )}
 
                     <p className="mt-6 text-center text-xs text-stone-400">
-                        🛡️ NyumbaHub never asks for payment in chat or to
+                        NyumbaHub never asks for payment in chat or to
                         unlock a vacancy report.
                     </p>
                 </div>
