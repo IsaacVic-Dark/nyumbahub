@@ -17,9 +17,20 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Guarded so a second db:seed doesn't hit the unique email constraint.
+        if (! User::where('email', 'test@example.com')->exists()) {
+            User::factory()->create([
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+            ]);
+        }
+
+        $this->call([
+            CountySeeder::class,
+            TownSeeder::class,
+            EstateSeeder::class,
+            SubEstateSeeder::class,
+            BuildingSeeder::class,
         ]);
     }
 }
