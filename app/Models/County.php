@@ -11,7 +11,15 @@ class County extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['code', 'name', 'slug', 'latitude', 'longitude'];
+
+    protected function casts(): array
+    {
+        return [
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
+        ];
+    }
 
     public function towns(): HasMany
     {
