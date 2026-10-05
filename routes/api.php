@@ -35,12 +35,12 @@ use Illuminate\Support\Facades\Route;
 
 // --- Auth (token-issuing; for Postman / mobile) --------------------------
 Route::prefix('auth')->group(function () {
-   Route::post('register', [AuthController::class, 'register'])->middleware('throttle:6,1');
-   Route::post('login', [AuthController::class, 'login'])->middleware('throttle:login');
-   Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('register', [AuthController::class, 'register'])->middleware('throttle:6,1');
+    Route::post('login', [AuthController::class, 'login'])->middleware('throttle:login');
+    Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 });
 
-Route::get('/me', fn () => auth()->user())->middleware('auth:sanctum');
+Route::get('/me', fn() => auth()->user())->middleware('auth:sanctum');
 
 // --- Location hierarchy -----------------------------------------------
 Route::apiResource('counties', CountyController::class)->except(['store', 'update', 'destroy']);
@@ -57,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('counties', [CountyController::class, 'store']);
     Route::put('counties/{county}', [CountyController::class, 'update']);
     Route::delete('counties/{county}', [CountyController::class, 'destroy']);
+    Route::post('counties/{county}/restore', [CountyController::class, 'restore'])->withTrashed();
 
     Route::get('counties/{county}/towns', [TownController::class, 'index'])->withoutMiddleware('auth:sanctum');
     Route::post('counties/{county}/towns', [TownController::class, 'store']);
