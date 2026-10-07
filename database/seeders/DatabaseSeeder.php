@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,11 +18,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // Guarded so a second db:seed doesn't hit the unique email constraint.
-        if (! User::where('email', 'test@example.com')->exists()) {
-            User::factory()->create([
-                'name' => 'Test User',
-                'email' => 'test@example.com',
+        // Re-runnable: creates the admin if missing, otherwise makes sure it has the admin role.
+        $admin = User::where('email', 'admin@example.com')->first();
+
+        if ($admin) {
+            // `role` isn't in $fillable, so forceFill is needed (cast to UserRole on save).
+            $admin->forceFill(['role' => UserRole::Admin])->save();
+        } else {
+            User::factory()->admin()->create([
+                'name' => 'admin',
+                'email' => 'admin@example.com',
             ]);
         }
 
