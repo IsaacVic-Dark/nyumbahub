@@ -29,6 +29,12 @@ class BuildingSeeder extends Seeder
                         ['name' => 'Demo Towers', 'latitude' => -1.2921, 'longitude' => 36.7870],
                     ],
                 ],
+                'Kasarani' => [
+                    'Mwiki' => [
+                        ['name' => 'Providence Square', 'latitude' => -1.2312548511740355, 'longitude' => 36.934772477415585],
+                        ['name' => 'MWM', 'latitude' => -1.2323508542051502, 'longitude' => 36.93628864320731],
+                    ],
+                ],
             ],
         ];
 
