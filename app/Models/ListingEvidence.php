@@ -10,9 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-// file_path should sit behind encrypted storage — never exposed publicly
-// (README §8). Consider an encrypted cast or a storage disk with
-// server-side encryption rather than trusting the app layer alone.
+// Visible to authenticated users to back up the reporter's claims, except
+// national ID documents (owner/admin only). Serve files via signed,
+// short-lived URLs rather than a public disk path.
+
 class ListingEvidence extends Model
 {
     use HasFactory, SoftDeletes;
