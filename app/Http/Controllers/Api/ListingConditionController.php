@@ -14,7 +14,17 @@ class ListingConditionController extends Controller
 {
     public function show(Listing $listing)
     {
-        return new ListingConditionResource($listing->condition()->firstOrFail());
+        $condition = $listing->condition;
+
+        if (! $condition) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No condition report has been submitted for this listing yet.',
+                'errors'  => null,
+            ], 404);
+        }
+
+        return new ListingConditionResource($condition);
     }
 
     public function store(StoreListingConditionRequest $request, Listing $listing)
