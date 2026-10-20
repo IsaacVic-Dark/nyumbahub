@@ -12,16 +12,18 @@ House hunting in Nairobi and satellite towns is expensive (agent fees up to KES 
 
 **No landlord, property manager, or agent is required to:** create listings, verify or claim listings, respond to reviews, manage availability, receive leads through the system, or pay for the service. Trust comes entirely from evidence, time, and the community — not from a paying party's cooperation.
 
----
+# Our people
+| **Reporter (Contributor)** | A tenant who is moving out or has moved out and creates a listing. Can optionally verify their phone, ID, and submit evidence for a "Verified Contributor" badge. |
+| **Seeker** | Anyone browsing listings, looking for a place to move into. Can leave community confirmations and comments; does not need to be verified to browse. |
+| **Tenant-commenter** | Any past or current tenant of a building who wants to add color via the comment thread — separate from the reporter's own structured review. |
 
 ## 2. Roles
 
 | Role | Description |
 |---|---|
-| **Reporter (Contributor)** | A tenant who is moving out or has moved out and creates a listing. Can optionally verify their phone, ID, and submit evidence for a "Verified Contributor" badge. |
-| **Seeker** | Anyone browsing listings, looking for a place to move into. Can leave community confirmations and comments; does not need to be verified to browse. |
-| **Tenant-commenter** | Any past or current tenant of a building who wants to add color via the comment thread — separate from the reporter's own structured review. |
-| **Admin** | Internal staff (`users.role = admin`). The only role that can resolve moderation flags and remove content. |
+| **User** | Can perform CRUD operations on there own Listing, evidence. Can be a seeker, reporter and tenant-commenter |
+| **Admin** | Internal staff (`users.role = admin`). The only role that can resolve moderation flags and remove content. Can do eveything, except for creating or removing admin |
+| **SuperAdmin** | Can do eveything, including creating and removing admin |
 
 A single user account can hold multiple roles over time (e.g., someone who reported a listing last year can also be a seeker today).
 
