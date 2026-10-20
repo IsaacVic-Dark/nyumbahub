@@ -9,6 +9,7 @@ use App\Http\Requests\StoreCommunityConfirmationRequest;
 use App\Http\Resources\CommunityConfirmationResource;
 use App\Models\Listing;
 use App\Models\Setting;
+use App\Models\CommunityConfirmation;
 
 // Index/store only — a confirmation is an append-only workflow event
 // (README §4.5), never edited or deleted by the person who submitted it.
@@ -21,6 +22,8 @@ class CommunityConfirmationController extends Controller
 
     public function store(StoreCommunityConfirmationRequest $request, Listing $listing)
     {
+        $this->authorize('create', [CommunityConfirmation::class, $listing]);
+
         $confirmation = $listing->confirmations()->create($request->validated() + [
             'user_id' => $request->user()->id,
         ]);
