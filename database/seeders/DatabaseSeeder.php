@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             EstateSeeder::class,
             SubEstateSeeder::class,
             BuildingSeeder::class,
+            ListingSeeder::class,
         ]);
     }
 }
