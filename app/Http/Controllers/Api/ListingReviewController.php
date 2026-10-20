@@ -12,7 +12,11 @@ class ListingReviewController extends Controller
 {
     public function show(Listing $listing)
     {
-        return new ListingReviewResource($listing->review()->firstOrFail());
+        $review = $listing->review;
+
+        return $review
+            ? new ListingReviewResource($review)
+            : response()->json(['data' => null]);
     }
 
     public function store(StoreListingReviewRequest $request, Listing $listing)
