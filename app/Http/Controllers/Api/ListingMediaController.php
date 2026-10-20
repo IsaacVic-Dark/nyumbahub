@@ -7,12 +7,18 @@ use App\Http\Requests\StoreListingMediaRequest;
 use App\Http\Resources\ListingMediaResource;
 use App\Models\Listing;
 use App\Models\ListingMedia;
+use Illuminate\Http\Request;
 
 // No `update` — media is uploaded or removed, never edited in place.
 class ListingMediaController extends Controller
 {
-    public function index(Listing $listing)
+    public function index(Request $request, Listing $listing)
     {
+        if (! $request->user('sanctum')) {
+            // Guests: thumbnail only
+            return ListingMediaResource::collection($listing->media()->oldest('id')->limit(1)->get());
+        }
+
         return ListingMediaResource::collection($listing->media()->paginate());
     }
 
