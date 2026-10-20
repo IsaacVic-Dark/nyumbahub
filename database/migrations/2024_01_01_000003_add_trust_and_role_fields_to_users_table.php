@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamp('national_id_verified_at')->nullable()->after('phone_verified_at');
             $table->boolean('is_verified_contributor')->default(false)->after('national_id_verified_at');
             $table->integer('trust_score')->default(0)->after('is_verified_contributor');
-            // 'user' | 'admin' — admin-only per README §4.8; kept as a plain
+            // 'user' | 'admin' | 'superadmin' — kept as a plain
             // string + PHP enum cast rather than a native DB enum so adding
             // roles later (e.g. a moderator tier, see README §9.3) never
             // requires an ALTER TYPE.
