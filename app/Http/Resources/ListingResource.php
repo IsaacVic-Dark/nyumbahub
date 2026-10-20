@@ -18,7 +18,7 @@ class ListingResource extends JsonResource
             'deposit_amount' => $this->deposit_amount !== null ? (float) $this->deposit_amount : null,
             'move_out_date' => $this->move_out_date?->toDateString(),
             'is_vacancy_confirmed_by_reporter' => $this->is_vacancy_confirmed_by_reporter,
-            'directions' => $this->directions,
+            'directions' => $this->when($request->user('sanctum') !== null, $this->directions),
             'status' => $this->status?->value,
             'archive_reason' => $this->archive_reason?->value,
             'expires_at' => $this->expires_at,
