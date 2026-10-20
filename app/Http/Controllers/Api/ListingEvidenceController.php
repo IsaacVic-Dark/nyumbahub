@@ -8,6 +8,9 @@ use App\Http\Requests\StoreListingEvidenceRequest;
 use App\Http\Resources\ListingEvidenceResource;
 use App\Models\Listing;
 use App\Models\ListingEvidence;
+use App\Enums\EvidenceType;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 // No generic `update` — status only ever moves via the admin-only verify/
 // reject actions below, kept separate from a raw field edit for the same
@@ -16,16 +19,23 @@ class ListingEvidenceController extends Controller
 {
     public function index(Listing $listing)
     {
-        abort_unless(
-            request()->user()->isAdmin() || $listing->user_id === request()->user()->id,
-            403
-        );
+        $this->authorize('viewAny', [ListingEvidence::class, $listing]);
 
-        return ListingEvidenceResource::collection($listing->evidence()->paginate());
+        $user = request()->user();
+        $query = $listing->evidence();
+
+        // National ID documents stay private to the owner and admins
+        if (! $user->isAdmin() && $listing->user_id !== $user->id) {
+            $query->where('type', '!=', EvidenceType::NationalId->value);
+        }
+
+        return ListingEvidenceResource::collection($query->paginate());
     }
 
     public function store(StoreListingEvidenceRequest $request, Listing $listing)
     {
+        $this->authorize('create', [ListingEvidence::class, $listing]);
+
         $evidence = $listing->evidence()->create($request->validated());
 
         return new ListingEvidenceResource($evidence);
@@ -34,6 +44,18 @@ class ListingEvidenceController extends Controller
     public function show(ListingEvidence $evidence)
     {
         $this->authorize('view', $evidence);
+
+        return new ListingEvidenceResource($evidence);
+    }
+
+    public function update(Request $request, ListingEvidence $evidence)
+    {
+        $this->authorize('update', $evidence);
+
+        $evidence->update($request->validate([
+            'type' => ['sometimes', Rule::enum(EvidenceType::class)],
+            'file_path' => ['sometimes', 'string'],
+        ]));
 
         return new ListingEvidenceResource($evidence);
     }
