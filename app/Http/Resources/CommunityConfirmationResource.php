@@ -15,6 +15,7 @@ class CommunityConfirmationResource extends JsonResource
         return [
             'id' => $this->id,
             'listing_id' => $this->listing_id,
+            'user_id' => $this->when($request->user('sanctum')?->isAdmin(), $this->user_id),
             'type' => $this->type?->value,
             'reported_rent_amount' => $this->reported_rent_amount !== null ? (float) $this->reported_rent_amount : null,
             'created_at' => $this->created_at,
