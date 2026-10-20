@@ -14,7 +14,7 @@ class ListingController extends Controller
     public function index(Building $building)
     {
         return ListingResource::collection(
-            $building->listings()->with(['reporter', 'condition', 'review', 'media'])->paginate()
+            $building->listings()->with(['media' => fn ($q) => $q->oldest('id')->limit(1)])->paginate()
         );
     }
 
@@ -37,6 +37,7 @@ class ListingController extends Controller
 
     public function show(Listing $listing)
     {
+        $this->authorize('view', $listing);
         return new ListingResource($listing->load(['reporter', 'condition', 'review', 'media']));
     }
 
