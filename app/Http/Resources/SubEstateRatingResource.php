@@ -12,7 +12,7 @@ class SubEstateRatingResource extends JsonResource
         return [
             'id' => $this->id,
             'sub_estate_id' => $this->sub_estate_id,
-            'user_id' => $this->user_id,
+            'user_id' => $this->when($request->user('sanctum')?->isAdmin(), $this->user_id),
             'security_rating' => $this->security_rating,
             'power_rating' => $this->power_rating,
             'water_rating' => $this->water_rating,
