@@ -7,12 +7,12 @@ use App\Models\User;
 
 class ListingCommentPolicy
 {
-    public function viewAny(?User $user): bool
+    public function viewAny(User $user): bool
     {
         return true;
     }
 
-    public function view(?User $user, ListingComment $comment): bool
+    public function view(User $user, ListingComment $comment): bool
     {
         return true;
     }

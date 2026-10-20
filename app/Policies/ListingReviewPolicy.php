@@ -8,7 +8,7 @@ use App\Models\User;
 
 class ListingReviewPolicy
 {
-    public function view(?User $user, ListingReview $review): bool
+    public function view(User $user, ListingReview $review): bool
     {
         return true;
     }

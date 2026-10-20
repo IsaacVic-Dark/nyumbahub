@@ -11,7 +11,7 @@ use App\Models\User;
 // listing, so the controller checks against the Listing, not this model.
 class ListingConditionPolicy
 {
-    public function view(?User $user, ListingCondition $condition): bool
+    public function view(User $user, ListingCondition $condition): bool
     {
         return true;
     }

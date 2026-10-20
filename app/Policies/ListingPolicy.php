@@ -12,7 +12,7 @@ class ListingPolicy
         return true;
     }
 
-    public function view(?User $user, Listing $listing): bool
+    public function view(User $user, Listing $listing): bool
     {
         return true;
     }
