@@ -26,6 +26,7 @@ class ListingConditionResource extends JsonResource
             'has_lift' => $this->has_lift,
             'pest_mould_leakage_history' => $this->pest_mould_leakage_history,
             'expected_hidden_costs' => $this->expected_hidden_costs,
+            'scores' => $this->scores,
         ];
     }
 }

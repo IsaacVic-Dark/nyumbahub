@@ -20,6 +20,7 @@ class ListingReviewResource extends JsonResource
             'recurring_issues' => $this->recurring_issues,
             'rent_changed_during_stay' => $this->rent_changed_during_stay,
             'reason_for_leaving' => $this->reason_for_leaving,
+            'advice' => $this->advice,
         ];
     }
 }

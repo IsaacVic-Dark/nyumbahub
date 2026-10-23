@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ListingMedia;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -13,7 +14,8 @@ class ListingMediaResource extends JsonResource
             'id' => $this->id,
             'listing_id' => $this->listing_id,
             'type' => $this->type,
-            'url' => $this->file_path, // swap for Storage::url() once a disk is wired up
+            'label' => $this->label,
+            'url' => ListingMedia::publicUrl($this->file_path),
             'created_at' => $this->created_at,
         ];
     }
