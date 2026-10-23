@@ -1,27 +1,42 @@
-import { useFlashToast } from '@/hooks/use-flash-toast';
-import { useAppearance } from '@/hooks/use-appearance';
-import { Toaster as Sonner, type ToasterProps } from 'sonner';
+"use client"
 
-function Toaster({ ...props }: ToasterProps) {
-    const { appearance } = useAppearance();
+import { useSyncExternalStore } from "react"
+import { Toaster as Sonner, ToasterProps } from "sonner"
 
-    useFlashToast();
-
-    return (
-        <Sonner
-            theme={appearance}
-            className="toaster group"
-            position="bottom-right"
-            style={
-                {
-                    '--normal-bg': 'var(--popover)',
-                    '--normal-text': 'var(--popover-foreground)',
-                    '--normal-border': 'var(--border)',
-                } as React.CSSProperties
-            }
-            {...props}
-        />
-    );
+// Reads the dark class directly from the <html> tag
+function useSystemTheme() {
+  return useSyncExternalStore(
+    (callback) => {
+      const observer = new MutationObserver(callback)
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      })
+      return () => observer.disconnect()
+    },
+    () => (document.documentElement.classList.contains("dark") ? "dark" : "light"),
+    () => "light" // Server fallback
+  )
 }
 
-export { Toaster };
+
+const Toaster = ({ ...props }: ToasterProps) => {
+   const theme = useSystemTheme()
+
+  return (
+    <Sonner
+      theme={theme as ToasterProps["theme"]}
+      className="toaster group"
+      style={
+        {
+          "--normal-bg": "var(--popover)",
+          "--normal-text": "var(--popover-foreground)",
+          "--normal-border": "var(--border)",
+        } as React.CSSProperties
+      }
+      {...props}
+    />
+  )
+}
+
+export { Toaster }
