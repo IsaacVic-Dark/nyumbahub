@@ -20,6 +20,7 @@ class UpdateListingRequest extends FormRequest
             'move_out_date' => ['sometimes', 'required', 'date'],
             'is_vacancy_confirmed_by_reporter' => ['sometimes', 'boolean'],
             'directions' => ['nullable', 'string'],
+            ...\App\Support\ListingDetailsRules::rules(),
             // Deliberately no `status`/`archive_reason` here — those change
             // only through Listing::transitionTo() (workflow/jobs), never a
             // raw field edit, so the audit trail in listing_status_histories

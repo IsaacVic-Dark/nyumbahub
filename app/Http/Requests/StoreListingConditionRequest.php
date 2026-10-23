@@ -35,6 +35,17 @@ class StoreListingConditionRequest extends FormRequest
             'has_lift' => ['nullable', 'boolean'],
             'pest_mould_leakage_history' => ['nullable', 'string'],
             'expected_hidden_costs' => ['nullable', 'array'],
+            'expected_hidden_costs.water' => ['nullable', 'string', 'max:255'],
+            'expected_hidden_costs.garbage' => ['nullable', 'string', 'max:255'],
+            'expected_hidden_costs.service_charge' => ['nullable', 'string', 'max:255'],
+            'expected_hidden_costs.parking' => ['nullable', 'string', 'max:255'],
+            'expected_hidden_costs.other' => ['nullable', 'string', 'max:255'],
+            'expected_hidden_costs.move_in_total' => ['nullable', 'string', 'max:255'],
+            'expected_hidden_costs.note' => ['nullable', 'string', 'max:2000'],
+            // { "Water reliability": { "score": 1-5, "note": "..." }, ... }
+            'scores' => ['nullable', 'array', 'max:30'],
+            'scores.*.score' => ['required_with:scores', 'integer', 'between:0,5'],
+            'scores.*.note' => ['nullable', 'string', 'max:500'],
         ];
     }
 }

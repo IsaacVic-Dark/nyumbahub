@@ -19,6 +19,9 @@ class StoreCommunityConfirmationRequest extends FormRequest
             'type' => ['required', 'in:still_vacant,new_tenant_moved_in,occupied,rent_changed,building_not_found,information_inaccurate'],
             // Required only when type = rent_changed (README §4.5.3)
             'reported_rent_amount' => ['required_if:type,rent_changed', 'nullable', 'numeric', 'min:0'],
+            'note' => ['nullable', 'string', 'max:1000'],
+            'visited_at' => ['nullable', 'date', 'before_or_equal:now'],
+            'spoke_to_caretaker' => ['nullable', 'in:Yes,No,Nobody was available'],
             // Required only when type = new_tenant_moved_in (README §4.5.1 — signed tenancy agreement)
             'evidence_id' => [
                 'required_if:type,new_tenant_moved_in',

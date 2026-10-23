@@ -15,6 +15,8 @@ class StoreListingEvidenceRequest extends FormRequest
     {
         return [
             'type' => ['required', 'in:phone_otp,photo,video,receipt,agreement,national_id'],
+            // Uploaded evidence goes to the PRIVATE disk and is never publicly served.
+            'file' => ['nullable', 'file', 'max:10240', 'mimetypes:image/jpeg,image/png,image/webp,application/pdf'],
             'file_path' => ['nullable', 'string'],
         ];
     }

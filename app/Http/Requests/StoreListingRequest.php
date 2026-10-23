@@ -20,6 +20,8 @@ class StoreListingRequest extends FormRequest
             'move_out_date' => ['required', 'date'],
             'is_vacancy_confirmed_by_reporter' => ['sometimes', 'boolean'],
             'directions' => ['nullable', 'string'],
-        ];
+            // Timing step of the wizard: planning to move out vs. already moved out.
+            'status' => ['sometimes', 'in:upcoming_vacancy,recently_vacated'],
+        ] + \App\Support\ListingDetailsRules::rules();
     }
 }

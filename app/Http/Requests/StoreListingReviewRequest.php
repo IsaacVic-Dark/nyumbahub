@@ -24,6 +24,7 @@ class StoreListingReviewRequest extends FormRequest
             'recurring_issues' => ['nullable', 'string'],
             'rent_changed_during_stay' => ['sometimes', 'boolean'],
             'reason_for_leaving' => ['nullable', 'string'],
+            'advice' => ['nullable', 'string'],
         ];
     }
 }

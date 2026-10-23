@@ -15,9 +15,14 @@ class StoreListingMediaRequest extends FormRequest
     {
         return [
             'type' => ['required', 'in:photo,video'],
-            // Swap for an actual `file` upload rule once storage is wired up;
-            // accepting a pre-uploaded path/URL for now to match the schema.
-            'file_path' => ['required', 'string'],
+            'label' => ['nullable', 'string', 'max:60'],
+            // Upload a file (stored on the public disk)...
+            'file' => [
+                'required_without:file_path', 'file', 'max:51200', // 50 MB
+                'mimetypes:image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm',
+            ],
+            // ...or, for API clients, reference an already-hosted path/URL.
+            'file_path' => ['required_without:file', 'nullable', 'string'],
         ];
     }
 }
