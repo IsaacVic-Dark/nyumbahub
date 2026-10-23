@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
-import { STATUS_META, VERIFICATION_META } from '@/lib/nyumba-data';
+import { PUBLIC_STATUS_KEYS, STATUS_META, VERIFICATION_META } from '@/lib/nyumba-data';
 import type { ListingStatus, VerificationBadge } from '@/types/nyumba';
 
 const SYSTEM_STATES: [string, string, string, string][] = [
@@ -32,7 +32,7 @@ const SYSTEM_STATES: [string, string, string, string][] = [
     ['Unsaved changes', '✍️', 'You have unsaved changes to your vacancy report.', 'Save draft'],
 ];
 
-const STATUS_KEYS = Object.keys(STATUS_META) as ListingStatus[];
+const STATUS_KEYS = [...PUBLIC_STATUS_KEYS] as ListingStatus[];
 const BADGE_KEYS = Object.keys(VERIFICATION_META) as VerificationBadge[];
 
 export default function States() {

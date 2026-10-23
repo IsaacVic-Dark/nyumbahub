@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 
 const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
     {
@@ -24,12 +24,12 @@ const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
         links: [
             { label: 'Help centre', href: '/help' },
             { label: 'Contact', href: '/help' },
-            { label: 'Staff portal', href: '/admin' },
         ],
     },
 ];
 
 export function SiteFooter() {
+    const isAdmin = Boolean((usePage().props as { auth?: { user?: { is_admin?: boolean } | null } }).auth?.user?.is_admin);
     return (
         <footer className="mt-16 rounded-2xl bg-emerald-950 px-6 py-10 text-emerald-50 sm:px-10">
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -43,7 +43,7 @@ export function SiteFooter() {
                         🇰🇪 Kenya · Prices in KES
                     </p>
                 </div>
-                {COLUMNS.map((col) => (
+                {COLUMNS.map((c) => (isAdmin && c.title === 'Support' ? { ...c, links: [...c.links, { label: 'Staff portal', href: '/admin' }] } : c)).map((col) => (
                     <div key={col.title}>
                         <h4 className="text-sm font-bold">{col.title}</h4>
                         <div className="mt-3 flex flex-col gap-2">

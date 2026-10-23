@@ -1,19 +1,32 @@
+import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
+/** Works uncontrolled (defaultValue) or controlled (value + onChange). */
 export function RadioCardGroup({
     name,
     options,
     defaultValue,
+    value,
+    onChange,
 }: {
     name: string;
     options: string[];
     defaultValue?: string;
+    value?: string;
+    onChange?: (value: string) => void;
 }) {
+    const [internal, setInternal] = useState(defaultValue ?? '');
+    const current = value ?? internal;
+
     return (
         <RadioGroup
             name={name}
-            defaultValue={defaultValue}
+            value={current}
+            onValueChange={(v) => {
+                setInternal(v);
+                onChange?.(v);
+            }}
             className="gap-2"
         >
             {options.map((option) => (

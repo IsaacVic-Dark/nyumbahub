@@ -26,11 +26,8 @@ export default function Login({ status, canResetPassword }: Props) {
                 <div className="w-full max-w-sm">
                     <Link
                         href={home()}
-                        className="mb-8 flex items-center gap-2 font-bold text-stone-900"
+                        className="mb-8 flex items-center justify-center gap-2 font-bold text-stone-900"
                     >
-                        <span className="flex size-8 items-center justify-center rounded-lg bg-emerald-700 text-sm font-black text-white">
-                            N
-                        </span>
                         NyumbaHub
                     </Link>
 
@@ -124,7 +121,14 @@ export default function Login({ status, canResetPassword }: Props) {
                         </div>
                     )}
 
-                    <p className="mt-6 text-center text-xs text-stone-400">
+                    <p className="mt-6 text-center text-sm text-stone-500">
+                        New to NyumbaHub?{' '}
+                        <Link href="/register" className="font-semibold text-emerald-700 hover:text-blue-500">
+                            Create account
+                        </Link>
+                    </p>
+
+                    <p className="mt-4 text-center text-xs text-stone-400">
                         NyumbaHub never asks for payment in chat or to
                         unlock a vacancy report.
                     </p>
@@ -134,23 +138,13 @@ export default function Login({ status, canResetPassword }: Props) {
             {/* ILLUSTRATION PANEL */}
             <div className="relative hidden flex-col justify-between overflow-hidden bg-emerald-950 p-10 text-emerald-50 lg:flex">
                 <div className="relative z-10">
-                    <span className="text-3xl">&ldquo;</span>
-                    <p className="mt-2 max-w-sm text-xl leading-snug font-semibold">
-                        I found my Ruaka apartment through someone who
-                        actually lived there. Knew the real rent and the
-                        water situation before I even visited.
+                    <h2 className="max-w-sm text-2xl leading-snug font-extrabold">
+                        Real homes, reported by people who actually lived there.
+                    </h2>
+                    <p className="mt-3 max-w-sm text-sm text-emerald-200/80">
+                        Know the real rent, the water situation and the neighbourhood
+                        before you visit.
                     </p>
-                    <div className="mt-6 flex items-center gap-3">
-                        <div className="flex size-10 items-center justify-center rounded-full bg-emerald-800 text-sm font-bold">
-                            AM
-                        </div>
-                        <div>
-                            <div className="text-sm font-bold">Amina M.</div>
-                            <div className="text-xs text-emerald-200/70">
-                                Nairobi
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 {/* Original abstract skyline illustration */}

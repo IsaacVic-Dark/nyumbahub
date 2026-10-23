@@ -8,21 +8,11 @@ import {
     Wallet,
     Warehouse,
 } from 'lucide-react';
-import { ListingCard } from '@/components/nyumba/listing-card';
-import { MetricStat } from '@/components/nyumba/metric-stat';
+import { FeaturedListings, HeroListing, HomeMetrics, HomeSearchCard } from '@/components/nyumba/home-parts';
 import { SectionHeading } from '@/components/nyumba/section-heading';
 import { SiteFooter } from '@/components/nyumba/site-footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { MOCK_LISTINGS } from '@/lib/nyumba-data';
-
-const METRICS = [
-    { value: '1,284', label: 'Recently reported vacancies' },
-    { value: '417', label: 'Community confirmations this week' },
-    { value: '2,930', label: 'Verified former tenants' },
-    { value: '186', label: 'Neighbourhoods covered' },
-];
 
 const STEPS = [
     {
@@ -94,35 +84,7 @@ export default function Dashboard() {
                         your community.
                     </p>
 
-                    <Card className="mt-6 flex flex-col gap-2.5 p-4">
-                        <Input placeholder="Location or estate, e.g. Ruaka" />
-                        <div className="grid grid-cols-2 gap-2.5">
-                            <select className="h-10 rounded-md border border-stone-200 bg-white px-3 text-sm text-stone-700">
-                                <option>What are you looking for?</option>
-                                <option>Bedsitter</option>
-                                <option>Studio</option>
-                                <option>Single room</option>
-                                <option>1-Bedroom</option>
-                                <option>2-Bedroom</option>
-                                <option>3-Bedroom</option>
-                                <option>Maisonette</option>
-                                <option>House</option>
-                            </select>
-                            <select className="h-10 rounded-md border border-stone-200 bg-white px-3 text-sm text-stone-700">
-                                <option>Rent range (KES)</option>
-                                <option>Under 10,000</option>
-                                <option>10,000 – 20,000</option>
-                                <option>20,000 – 35,000</option>
-                                <option>35,000 – 60,000</option>
-                                <option>Above 60,000</option>
-                            </select>
-                        </div>
-                        <Button asChild className="w-full">
-                            <Link href="/explore">
-                                <Search className="size-4" /> Search
-                            </Link>
-                        </Button>
-                    </Card>
+                    <HomeSearchCard placeholder="Location or estate, e.g. Ruaka" />
 
                     <div className="mt-4 flex flex-wrap gap-3">
                         <Button variant="outline" asChild>
@@ -145,17 +107,13 @@ export default function Dashboard() {
 
                 <div className="hidden lg:block">
                     <div className="mx-auto max-w-sm -rotate-1">
-                        <ListingCard listing={MOCK_LISTINGS[0]} index={0} />
+                        <HeroListing />
                     </div>
                 </div>
             </section>
 
             {/* TRUST METRICS */}
-            <section className="grid grid-cols-2 gap-6 rounded-2xl border border-stone-200 bg-white py-8 sm:grid-cols-4">
-                {METRICS.map((m) => (
-                    <MetricStat key={m.label} {...m} />
-                ))}
-            </section>
+            <HomeMetrics className="grid grid-cols-2 gap-6 rounded-2xl border border-stone-200 bg-white py-8 sm:grid-cols-4" />
 
             {/* HOW IT WORKS */}
             <section>
@@ -208,10 +166,8 @@ export default function Dashboard() {
                         </Button>
                     }
                 />
-                <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {MOCK_LISTINGS.map((listing, i) => (
-                        <ListingCard key={listing.id} listing={listing} index={i} />
-                    ))}
+                <div className="mt-6">
+                    <FeaturedListings />
                 </div>
             </section>
 
@@ -245,7 +201,7 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <Button variant="secondary" asChild className="w-fit">
-                    <Link href="/confirm">See the confirmation flow</Link>
+                    <Link href="/help">How confirmations work</Link>
                 </Button>
             </Card>
 

@@ -1,5 +1,4 @@
-import { Head } from '@inertiajs/react';
-import { ReportIssueDialog } from '@/components/nyumba/report-issue-dialog';
+import { Head, Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -53,13 +52,14 @@ export default function Safety() {
                     If someone asked you for money to reserve a house, tell
                     us right away so we can suspend the account.
                 </p>
-                <ReportIssueDialog
-                    trigger={
-                        <Button variant="destructive" className="mt-3">
-                            Report a scam or unsafe user
-                        </Button>
-                    }
-                />
+                <p className="mt-2 text-sm text-stone-500">
+                    Open the vacancy report involved and use the Report
+                    button on that page, or report from the conversation in
+                    Messages.
+                </p>
+                <Button variant="destructive" className="mt-3" asChild>
+                    <Link href="/messages">Go to my messages</Link>
+                </Button>
             </Card>
         </div>
     );

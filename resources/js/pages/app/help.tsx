@@ -3,7 +3,7 @@ import { ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { ListingStatusBadge, VerificationBadgePill } from '@/components/nyumba/status-badge';
 import { Card } from '@/components/ui/card';
-import { STATUS_META, VERIFICATION_META } from '@/lib/nyumba-data';
+import { PUBLIC_STATUS_KEYS, STATUS_META, VERIFICATION_META } from '@/lib/nyumba-data';
 import type { ListingStatus, VerificationBadge } from '@/types/nyumba';
 
 const TOPICS = [
@@ -57,7 +57,7 @@ const FAQS: [string, string][] = [
     ],
 ];
 
-const STATUS_KEYS = Object.keys(STATUS_META) as ListingStatus[];
+const STATUS_KEYS = [...PUBLIC_STATUS_KEYS] as ListingStatus[];
 const BADGE_KEYS = Object.keys(VERIFICATION_META) as VerificationBadge[];
 
 export default function Help() {

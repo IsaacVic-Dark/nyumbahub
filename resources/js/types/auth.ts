@@ -2,6 +2,9 @@ export type User = {
     id: number;
     name: string;
     email: string;
+    phone?: string | null;
+    role?: 'user' | 'admin' | 'superadmin';
+    is_admin?: boolean;
     avatar?: string;
     email_verified_at: string | null;
     created_at: string;
@@ -10,5 +13,6 @@ export type User = {
 };
 
 export type Auth = {
-    user: User;
+    /** null for guests (public pages). */
+    user: User | null;
 };

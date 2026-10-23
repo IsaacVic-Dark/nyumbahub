@@ -1,248 +1,515 @@
 import { Head, Link } from '@inertiajs/react';
-import { ShieldAlert } from 'lucide-react';
-import { ListingCard } from '@/components/nyumba/listing-card';
-import { MetricStat } from '@/components/nyumba/metric-stat';
-import { SectionHeading } from '@/components/nyumba/section-heading';
-import { SiteFooter } from '@/components/nyumba/site-footer';
+import {
+    ArrowRight,
+    BadgeCheck,
+    CheckCheck,
+    ChevronLeft,
+    ChevronRight,
+    ClipboardCheck,
+    Clock,
+    Droplets,
+    FileText,
+    LogOut,
+    RefreshCw,
+    Search,
+    ShieldAlert,
+    Users,
+    Wallet,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { useState } from 'react';
+import { LandingFooter } from '@/components/landing/landing-footer';
+import {
+    brandButton,
+    LandingNav,
+    outlineButton,
+} from '@/components/landing/landing-nav';
+import {
+    CONTAINER,
+    EYEBROW,
+    FeaturedGrid,
+    HeroVisual,
+    LandingSearchBar,
+    LandingStats,
+    SectionHead,
+} from '@/components/landing/landing-parts';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { MOCK_LISTINGS } from '@/lib/nyumba-data';
-import { home } from '@/routes';
+import { cn } from '@/lib/utils';
 
-const METRICS = [
-    { value: '1,284', label: 'Recently reported vacancies' },
-    { value: '356', label: 'Community confirmations this week' },
-    { value: '942', label: 'Verified former tenants' },
-    { value: '47', label: 'Neighbourhoods covered' },
+/* ---------------------------- static content ---------------------------- */
+
+const PROPERTY_TYPES = [
+    {
+        type: '2-Bedroom',
+        image: '/images/2_bedroom_img.jpg',
+        body: 'Room for couples, small families, or a home office.',
+    },
+    {
+        type: '1-Bedroom',
+        image: '/images/1_bedroom_img.jpg',
+        body: 'A comfortable step up with a separate bedroom and living space.',
+    },
+    {
+        type: 'Bedsitter',
+        image: '/images/bedsitter_img.jpg',
+        body: 'Compact and affordable. Ideal for one person starting out.',
+    },
+    {
+        type: '3-Bedroom',
+        image: '/images/3_bedroom_img.jpg',
+        body: 'Space for growing families who need room to breathe.',
+    },
 ];
 
-const STEPS = [
-    { title: 'Step 1', body: 'A tenant moves out.' },
+// Swap this for any photo in /public/images
+const BETTER_WAY_IMAGE = '/images/3_bedroom_img.jpg';
+
+const BETTER_WAY: { icon: LucideIcon; title: string; body: string }[] = [
     {
-        title: 'Step 2',
+        icon: Clock,
+        title: 'Find homes earlier',
+        body: 'See vacancies reported by tenants before they reach adverts.',
+    },
+    {
+        icon: Wallet,
+        title: 'Know the last-known rent before visiting',
+        body: 'Go in with a realistic price and the right questions.',
+    },
+    {
+        icon: ClipboardCheck,
+        title: 'See real condition reports',
+        body: 'Ratings and notes from people who actually lived there.',
+    },
+    {
+        icon: Droplets,
+        title: 'Learn about water, security, noise and hidden costs',
+        body: 'The things a viewing rarely tells you.',
+    },
+    {
+        icon: Users,
+        title: 'Avoid relying only on agents and unclear information',
+        body: 'Community-confirmed details you can check for yourself.',
+    },
+];
+
+const STEPS: { n: string; icon: LucideIcon; title: string; body: string }[] = [
+    {
+        n: '01',
+        icon: LogOut,
+        title: 'A tenant moves out',
+        body: 'They decide to share what they know about the home.',
+    },
+    {
+        n: '02',
+        icon: FileText,
+        title: 'Experience shared',
         body: "They share the home's location, rent, condition, and lived experience.",
     },
     {
-        title: 'Step 3',
+        n: '03',
+        icon: Search,
+        title: 'Seekers find it',
         body: 'House seekers find it and verify availability at the building.',
     },
-    { title: 'Step 4', body: 'The community keeps reports current.' },
+    {
+        n: '04',
+        icon: RefreshCw,
+        title: 'Community keeps it current',
+        body: 'The community keeps reports current.',
+    },
 ];
 
-const WHY_USE = [
-    { icon: '🏠', title: 'Find homes earlier' },
-    { icon: '💰', title: 'Know the last-known rent before visiting' },
-    { icon: '📋', title: 'See real condition reports' },
-    { icon: '🚿', title: 'Learn about water, security, noise and hidden costs' },
-    { icon: '🤝', title: 'Avoid relying only on agents and unclear information' },
+// TODO: PLACEHOLDER testimonials. Replace with real quotes before launch.
+const TESTIMONIALS = [
+    {
+        quote: 'I found a bedsitter before it was even advertised, and the last-known rent was spot on. No surprises at the door.',
+        name: 'Wanjiru K.',
+        meta: 'House seeker · Ruaka',
+        tag: 'Bedsitter',
+    },
+    {
+        quote: 'The water and security ratings told me what the caretaker never would. That honesty saved me a wasted trip.',
+        name: 'Brian O.',
+        meta: 'House seeker · Kilimani',
+        tag: '1-Bedroom',
+    },
+    {
+        quote: 'I posted my vacancy report in ten minutes and neighbours confirmed it within days. It felt good helping the next tenant.',
+        name: 'Achieng M.',
+        meta: 'Reporter · Kasarani',
+        tag: '2-Bedroom',
+    },
 ];
+
+const SAFETY_POINTS = [
+    'NyumbaHub does not rent houses or collect rent.',
+    'Vacancy and rent can change quickly.',
+    'Inspect a property before paying any money.',
+    'Never send money before confirming the responsible person and the house.',
+];
+
+/* -------------------------------- page --------------------------------- */
 
 export default function Welcome() {
+    const [t, setT] = useState(0);
+    const current = TESTIMONIALS[t];
+    const pad = (n: number) => String(n).padStart(2, '0');
+
     return (
-        <>
+        <div className="landing min-h-screen bg-lp-bg text-lp-ink">
             <Head title="NyumbaHub — Find homes through people who lived there." />
 
-            {/* GUEST HEADER */}
-            <header className="border-b border-stone-200">
-                <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 lg:px-8">
-                    <Link href={home()} className="flex items-center gap-2 font-bold text-stone-900">
-                        <span className="flex size-8 items-center justify-center rounded-lg bg-emerald-700 text-sm font-black text-white">
-                            N
-                        </span>
-                        NyumbaHub
-                    </Link>
-                    <nav className="ml-6 hidden items-center gap-4 text-sm font-medium text-stone-600 sm:flex">
-                        <Link href="/explore">Explore</Link>
-                        <Link href="/safety">Safety</Link>
-                        <Link href="/help">Help</Link>
-                    </nav>
-                    <div className="ml-auto flex items-center gap-2">
-                        <Button variant="ghost" asChild>
-                            <Link href="/login">Log in</Link>
-                        </Button>
-                        <Button asChild>
-                            <Link href="/explore">Explore homes</Link>
-                        </Button>
-                    </div>
-                </div>
-            </header>
+            <LandingNav />
 
-            <main className="mx-auto max-w-7xl px-4 lg:px-8">
+            <main>
                 {/* HERO */}
-                <section className="grid items-center gap-10 py-10 lg:grid-cols-2 lg:py-14">
-                    <div>
-                        <h1 className="text-3xl leading-[1.1] font-extrabold tracking-tight text-stone-900 sm:text-4xl lg:text-[2.7rem]">
-                            Find homes through people who lived there.
-                        </h1>
-                        <p className="mt-4 max-w-md text-base text-stone-600 lg:text-lg">
-                            Discover recently vacated homes, last-known rent,
-                            real house conditions, and honest tenant
-                            experiences from your community.
-                        </p>
+                <section className={cn(CONTAINER, 'pt-10 pb-14 lg:pt-14')}>
+                    <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+                        <div>
+                            <p className={EYEBROW}>
+                                Find a place. Know before you go.
+                            </p>
+                            <h1 className="mt-4 font-serif text-4xl leading-[1.05] font-bold tracking-tight text-lp-ink sm:text-5xl lg:text-[3.4rem]">
+                                Find homes through people who lived there.
+                            </h1>
+                            <p className="mt-5 max-w-md text-base leading-relaxed text-lp-muted">
+                                Discover recently vacated homes, last-known
+                                rent, real house conditions, and honest tenant
+                                experiences from your community.
+                            </p>
 
-                        <Card className="mt-6 flex flex-col gap-2.5 p-4">
-                            <Input placeholder="Search estate, town, or landmark — e.g. Ruaka, Kilimani" />
-                            <div className="grid grid-cols-2 gap-2.5">
-                                <select className="h-10 rounded-md border border-stone-200 bg-white px-3 text-sm text-stone-700">
-                                    <option>What are you looking for?</option>
-                                    <option>Bedsitter</option>
-                                    <option>Studio</option>
-                                    <option>1 Bedroom</option>
-                                    <option>2 Bedroom</option>
-                                    <option>3 Bedroom</option>
-                                    <option>Maisonette</option>
-                                </select>
-                                <select className="h-10 rounded-md border border-stone-200 bg-white px-3 text-sm text-stone-700">
-                                    <option>Rent range (KES)</option>
-                                    <option>Under 10,000</option>
-                                    <option>10,000 – 20,000</option>
-                                    <option>20,000 – 35,000</option>
-                                    <option>35,000+</option>
-                                </select>
+                            <div className="mt-8 flex flex-wrap gap-3">
+                                <Button
+                                    asChild
+                                    size="lg"
+                                    className={cn('h-11', brandButton)}
+                                >
+                                    <Link href="/explore">
+                                        Explore homes
+                                        <ArrowRight className="size-4" />
+                                    </Link>
+                                </Button>
+                                <Button
+                                    asChild
+                                    size="lg"
+                                    variant="outline"
+                                    className={cn('h-11', outlineButton)}
+                                >
+                                    <Link href="/post">
+                                        Post a vacancy report
+                                    </Link>
+                                </Button>
                             </div>
-                            <Button asChild className="w-full">
-                                <Link href="/explore">
-                                    Search vacancy reports
-                                </Link>
-                            </Button>
-                        </Card>
 
-                        <div className="mb-5 flex flex-wrap gap-3">
-                            <Button variant="outline" asChild>
-                                <Link href="/explore">
-                                    Explore recently vacated homes
-                                </Link>
-                            </Button>
-                            <Button
-                                asChild
-                                className="bg-amber-500 text-amber-950 hover:bg-amber-400"
-                            >
-                                <Link href="/post">Post a vacancy report</Link>
-                            </Button>
+                            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs text-lp-muted">
+                                {[
+                                    'Tenant-reported',
+                                    'Community-confirmed',
+                                    'Always verify when you visit',
+                                ].map((x) => (
+                                    <li
+                                        key={x}
+                                        className="flex items-center gap-1.5"
+                                    >
+                                        <CheckCheck className="size-3.5 text-lp-brand" />
+                                        {x}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                        <p className="text-xs text-stone-500">
-                            Tenant-reported. Community-confirmed. Always
-                            verify when you visit.
-                        </p>
+
+                        <HeroVisual />
                     </div>
 
-                    <div className="hidden sm:block">
-                        <div className="mx-auto max-w-sm">
-                            <ListingCard listing={MOCK_LISTINGS[0]} index={0} />
+                    <LandingSearchBar />
+                    <LandingStats />
+                </section>
+
+                {/* FEATURED */}
+                <section className="bg-lp-alt py-16 lg:py-20">
+                    <div className={CONTAINER}>
+                        <SectionHead
+                            eyebrow="Featured reports"
+                            title={
+                                <>
+                                    Homes Worth
+                                    <br />
+                                    Coming Home To.
+                                </>
+                            }
+                            body="Explore the latest tenant-reported homes, with last-known rent, condition notes, and community confirmation."
+                        />
+                        <div className="mt-10">
+                            <FeaturedGrid count={3} />
                         </div>
                     </div>
                 </section>
 
-                {/* TRUST METRICS */}
-                <section className="grid grid-cols-2 gap-6 border-y border-stone-200 bg-stone-50 py-8 lg:grid-cols-4">
-                    {METRICS.map((m) => (
-                        <MetricStat key={m.label} {...m} />
-                    ))}
+                {/* PROPERTY TYPES */}
+                <section className="py-16 lg:py-20">
+                    <div className={CONTAINER}>
+                        <SectionHead
+                            eyebrow="Explore by house type"
+                            title={
+                                <>
+                                    A Home for Every
+                                    <br />
+                                    Next Chapter.
+                                </>
+                            }
+                            body="From compact bedsitters to family-sized homes, explore the possibilities."
+                        />
+                        <div className="mt-10 grid grid-cols-2 gap-5 lg:grid-cols-4">
+                            {PROPERTY_TYPES.map((p) => (
+                                <Link
+                                    key={p.type}
+                                    href={`/explore?house_type=${encodeURIComponent(p.type)}`}
+                                    className="group block"
+                                >
+                                    <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-lp-alt">
+                                        <img
+                                            src={p.image}
+                                            alt={p.type}
+                                            loading="lazy"
+                                            className="size-full object-cover transition duration-300 group-hover:scale-105"
+                                        />
+                                    </div>
+                                    <div className="mt-3 flex items-start justify-between gap-3">
+                                        <div>
+                                            <h3 className="text-sm font-semibold text-lp-ink">
+                                                {p.type}
+                                            </h3>
+                                            <p className="mt-1 text-xs leading-relaxed text-lp-muted">
+                                                {p.body}
+                                            </p>
+                                        </div>
+                                        <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-lp-line text-lp-muted transition group-hover:border-lp-brand group-hover:text-lp-brand">
+                                            <ArrowRight className="size-3.5" />
+                                        </span>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
                 </section>
-                <p className="py-2 text-center text-[11px] text-stone-400">
-                    Sample metrics shown for illustration — replace with live
-                    figures.
-                </p>
 
-                {/* HOW IT WORKS */}
-                <section className="py-12">
-                    <SectionHeading title="How NyumbaHub works" />
-                    <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                        {STEPS.map((step) => (
-                            <Card key={step.title} className="p-5">
-                                <div className="mb-2 text-sm font-extrabold text-emerald-700">
-                                    {step.title}
+                {/* BETTER WAY */}
+                <section className="bg-lp-alt py-16 lg:py-20">
+                    <div
+                        className={cn(
+                            CONTAINER,
+                            'grid items-center gap-10 lg:grid-cols-2 lg:gap-16',
+                        )}
+                    >
+                        <div className="aspect-[4/4.4] overflow-hidden rounded-2xl">
+                            <img
+                                src={BETTER_WAY_IMAGE}
+                                alt="A home found through NyumbaHub"
+                                loading="lazy"
+                                className="size-full object-cover"
+                            />
+                        </div>
+                        <div>
+                            <p className={EYEBROW}>The NyumbaHub difference</p>
+                            <h2 className="mt-3 font-serif text-3xl leading-[1.1] font-bold tracking-tight text-lp-ink sm:text-4xl">
+                                A Better Way
+                                <br />
+                                to Find Home.
+                            </h2>
+                            <p className="mt-4 max-w-md text-sm leading-relaxed text-lp-muted">
+                                Finding a home is more than a search. It&rsquo;s
+                                a decision about how you want to live, and
+                                people who lived there know best.
+                            </p>
+                            <ul className="mt-8 border-t border-lp-line">
+                                {BETTER_WAY.map(
+                                    ({ icon: Icon, title, body }) => (
+                                        <li
+                                            key={title}
+                                            className="flex gap-4 border-b border-lp-line py-4"
+                                        >
+                                            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-lp-line bg-lp-card text-lp-brand">
+                                                <Icon className="size-4" />
+                                            </span>
+                                            <div>
+                                                <h3 className="text-sm font-semibold text-lp-ink">
+                                                    {title}
+                                                </h3>
+                                                <p className="mt-0.5 text-xs text-lp-muted">
+                                                    {body}
+                                                </p>
+                                            </div>
+                                        </li>
+                                    ),
+                                )}
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                {/* STEPS */}
+                <section className="py-16 lg:py-20">
+                    <div className={CONTAINER}>
+                        <SectionHead
+                            eyebrow="How NyumbaHub works"
+                            title="Every Step, Made Clear."
+                            body="From one tenant's move-out to your next viewing, here is how a vacancy report comes to life."
+                        />
+                        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
+                            {STEPS.map(({ n, icon: Icon, title, body }, i) => (
+                                <div
+                                    key={n}
+                                    className={cn(
+                                        'lg:px-6',
+                                        i > 0 && 'lg:border-l lg:border-lp-line',
+                                        i === 0 && 'lg:pl-0',
+                                    )}
+                                >
+                                    <div className="flex items-start justify-between">
+                                        <span className="font-serif text-4xl font-bold text-lp-brand">
+                                            {n}
+                                        </span>
+                                        <span className="flex size-9 items-center justify-center rounded-full bg-lp-soft text-lp-brand">
+                                            <Icon className="size-4" />
+                                        </span>
+                                    </div>
+                                    <h3 className="mt-5 text-base font-semibold text-lp-ink">
+                                        {title}
+                                    </h3>
+                                    <p className="mt-2 text-sm leading-relaxed text-lp-muted">
+                                        {body}
+                                    </p>
                                 </div>
-                                <p className="text-sm text-stone-700">
-                                    {step.body}
-                                </p>
-                            </Card>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </section>
-            </main>
 
-            {/* WHY USE */}
-            <section className="bg-emerald-50 py-12">
-                <div className="mx-auto max-w-4xl px-4 lg:px-8">
-                    <h2 className="mb-6 text-2xl font-extrabold text-stone-900">
-                        Why use NyumbaHub
-                    </h2>
-                    <ul className="grid gap-3 text-sm sm:grid-cols-2">
-                        {WHY_USE.map((item) => (
-                            <li key={item.title} className="flex gap-2 text-stone-700">
-                                <span>{item.icon}</span>
-                                {item.title}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </section>
+                {/* TESTIMONIALS (placeholder content) */}
+                <section className="bg-lp-alt py-16 lg:py-20">
+                    <div
+                        className={cn(
+                            CONTAINER,
+                            'grid items-center gap-10 lg:grid-cols-[1fr_1.7fr] lg:gap-14',
+                        )}
+                    >
+                        <div>
+                            <p className={EYEBROW}>Testimonials</p>
+                            <h2 className="mt-3 font-serif text-3xl leading-[1.1] font-bold tracking-tight text-lp-ink sm:text-4xl">
+                                Stories From
+                                <br />
+                                Our Community.
+                            </h2>
+                            <p className="mt-4 max-w-xs text-sm leading-relaxed text-lp-muted">
+                                Hear from house seekers and tenants who shared
+                                and found homes on NyumbaHub.
+                            </p>
+                            <div className="mt-6 flex items-center gap-3">
+                                <button
+                                    type="button"
+                                    aria-label="Previous story"
+                                    onClick={() =>
+                                        setT(
+                                            (t - 1 + TESTIMONIALS.length) %
+                                                TESTIMONIALS.length,
+                                        )
+                                    }
+                                    className="flex size-9 items-center justify-center rounded-full border border-lp-line bg-lp-card text-lp-ink hover:bg-lp-bg"
+                                >
+                                    <ChevronLeft className="size-4" />
+                                </button>
+                                <button
+                                    type="button"
+                                    aria-label="Next story"
+                                    onClick={() =>
+                                        setT((t + 1) % TESTIMONIALS.length)
+                                    }
+                                    className="flex size-9 items-center justify-center rounded-full border border-lp-line bg-lp-card text-lp-ink hover:bg-lp-bg"
+                                >
+                                    <ChevronRight className="size-4" />
+                                </button>
+                                <span className="text-xs text-lp-muted">
+                                    <b className="text-lp-ink">{pad(t + 1)}</b>{' '}
+                                    / {pad(TESTIMONIALS.length)}
+                                </span>
+                            </div>
+                        </div>
 
-            <main className="mx-auto max-w-7xl px-4 lg:px-8">
-                {/* FEATURED LISTINGS */}
-                <section className="py-12">
-                    <SectionHeading
-                        title="Featured recent vacancy reports"
-                        action={
-                            <Button variant="ghost" asChild>
-                                <Link href="/explore">See all</Link>
+                        <figure className="rounded-2xl border border-lp-line bg-lp-card p-8 sm:p-10">
+                            <span className="font-serif text-6xl leading-none text-lp-brand">
+                                &ldquo;
+                            </span>
+                            <blockquote className="mt-2 font-serif text-xl leading-snug font-semibold text-lp-ink sm:text-2xl">
+                                {current.quote}
+                            </blockquote>
+                            <figcaption className="mt-8 flex items-center justify-between gap-4 border-t border-lp-line pt-5">
+                                <div className="flex items-center gap-3">
+                                    <span className="flex size-10 items-center justify-center rounded-full bg-lp-soft text-sm font-semibold text-lp-brand">
+                                        {current.name[0]}
+                                    </span>
+                                    <div>
+                                        <div className="text-sm font-semibold text-lp-ink">
+                                            {current.name}
+                                        </div>
+                                        <div className="text-xs text-lp-muted">
+                                            {current.meta}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span className="rounded-full bg-lp-soft px-3 py-1 text-[11px] font-medium text-lp-brand">
+                                    {current.tag}
+                                </span>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </section>
+
+                {/* COMMUNITY + SAFETY */}
+                <section className="py-16 lg:py-20">
+                    <div className={cn(CONTAINER, 'max-w-4xl')}>
+                        <div className="text-center">
+                            <span className="mx-auto flex size-10 items-center justify-center rounded-full bg-lp-soft text-lp-brand">
+                                <BadgeCheck className="size-5" />
+                            </span>
+                            <h2 className="mt-4 font-serif text-3xl font-bold tracking-tight text-lp-ink">
+                                Kept accurate by the community
+                            </h2>
+                            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-lp-muted">
+                                Reports become more useful when people confirm
+                                them after visiting. Every &ldquo;still
+                                vacant,&rdquo; &ldquo;now occupied,&rdquo; or
+                                &ldquo;rent changed&rdquo; update comes from
+                                someone who actually checked, not from us.
+                            </p>
+                        </div>
+
+                        <div className="mt-12 rounded-2xl border border-lp-line bg-lp-card p-6 sm:p-8">
+                            <h2 className="flex items-center gap-2 font-serif text-xl font-bold text-lp-ink">
+                                <ShieldAlert className="size-5 text-lp-brand" />
+                                Safety and transparency
+                            </h2>
+                            <ul className="mt-4 space-y-2 text-sm text-lp-muted">
+                                {SAFETY_POINTS.map((p) => (
+                                    <li key={p} className="flex gap-2">
+                                        <span className="mt-2 size-1.5 shrink-0 rounded-full bg-lp-brand" />
+                                        {p}
+                                    </li>
+                                ))}
+                            </ul>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                asChild
+                                className={cn('mt-5', outlineButton)}
+                            >
+                                <Link href="/safety">Visit the Safety Centre</Link>
                             </Button>
-                        }
-                    />
-                    <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                        {MOCK_LISTINGS.map((listing, i) => (
-                            <ListingCard key={listing.id} listing={listing} index={i} />
-                        ))}
+                        </div>
                     </div>
                 </section>
-
-                {/* COMMUNITY VERIFICATION */}
-                <section className="border-y border-stone-200 bg-stone-50 py-12 text-center">
-                    <div className="mx-auto max-w-3xl">
-                        <h2 className="mb-3 text-2xl font-extrabold text-stone-900">
-                            Kept accurate by the community
-                        </h2>
-                        <p className="text-sm text-stone-500">
-                            Reports become more useful when people confirm
-                            them after visiting. Every &ldquo;still
-                            vacant,&rdquo; &ldquo;now occupied,&rdquo; or
-                            &ldquo;rent changed&rdquo; update comes from
-                            someone who actually checked — not from us.
-                        </p>
-                    </div>
-                </section>
-
-                {/* SAFETY & TRANSPARENCY */}
-                <section className="py-12">
-                    <Card className="mx-auto max-w-3xl border-amber-300 p-6">
-                        <h2 className="mb-3 flex items-center gap-2 text-lg font-extrabold text-stone-900">
-                            <ShieldAlert className="size-5 text-amber-600" />
-                            Safety and transparency
-                        </h2>
-                        <ul className="space-y-2 text-sm text-stone-500">
-                            <li>
-                                • NyumbaHub does not rent houses or collect
-                                rent.
-                            </li>
-                            <li>• Vacancy and rent can change quickly.</li>
-                            <li>
-                                • Inspect a property before paying any money.
-                            </li>
-                            <li>
-                                • Never send money before confirming the
-                                responsible person and the house.
-                            </li>
-                        </ul>
-                        <Button variant="outline" size="sm" className="mt-4" asChild>
-                            <Link href="/safety">Visit the Safety Centre</Link>
-                        </Button>
-                    </Card>
-                </section>
-
-                <SiteFooter />
             </main>
-        </>
+
+            <LandingFooter />
+        </div>
     );
 }

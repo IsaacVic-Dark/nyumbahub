@@ -4,10 +4,12 @@ import { Label } from '@/components/ui/label';
 export function Field({
     label,
     hint,
+    error,
     children,
 }: {
     label: ReactNode;
     hint?: string;
+    error?: string;
     children: ReactNode;
 }) {
     return (
@@ -17,6 +19,7 @@ export function Field({
             </Label>
             {children}
             {hint && <span className="text-xs text-stone-400">{hint}</span>}
+            {error && <span className="text-xs text-red-600">{error}</span>}
         </div>
     );
 }

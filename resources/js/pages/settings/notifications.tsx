@@ -1,5 +1,4 @@
 import { Head } from '@inertiajs/react';
-import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -75,28 +74,13 @@ export default function NotificationsSettings() {
                         </Label>
                     ))}
                 </div>
-                <p className="mt-3 rounded-lg bg-stone-50 p-3 text-xs text-stone-500">
-                    📶 Offline draft mode is on. One draft is waiting to
-                    upload when you reconnect.
-                </p>
             </Card>
 
             <Card className="border-red-200 p-5">
                 <h3 className="font-bold text-stone-900">Danger zone</h3>
                 <div className="mt-3 flex flex-wrap gap-2">
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toast('Export requested')}
-                    >
-                        Export my data
-                    </Button>
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => toast('Deletion request received')}
-                    >
-                        Delete account
+                    <Button variant="destructive" size="sm" asChild>
+                        <a href="/settings/profile">Delete account…</a>
                     </Button>
                 </div>
             </Card>

@@ -1,8 +1,18 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-export function RateControl({ label }: { label: string }) {
-    const [selected, setSelected] = useState<number | null>(null);
+/** 1–5 rating buttons. Controlled with `value` + `onChange`, otherwise keeps its own state. */
+export function RateControl({
+    label,
+    value,
+    onChange,
+}: {
+    label: string;
+    value?: number | null;
+    onChange?: (value: number) => void;
+}) {
+    const [internal, setInternal] = useState<number | null>(null);
+    const selected = value ?? internal;
 
     return (
         <div
@@ -14,7 +24,10 @@ export function RateControl({ label }: { label: string }) {
                 <button
                     key={n}
                     type="button"
-                    onClick={() => setSelected(n)}
+                    onClick={() => {
+                        setInternal(n);
+                        onChange?.(n);
+                    }}
                     className={cn(
                         'flex size-7 items-center justify-center rounded-md border text-xs font-bold',
                         selected === n
