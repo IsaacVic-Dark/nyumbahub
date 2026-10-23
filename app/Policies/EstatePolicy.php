@@ -18,9 +18,11 @@ class EstatePolicy
         return true;
     }
 
+    // Contributors can add the missing estate / sub-estate / building while
+    // posting a report; editing and deleting stay admin-only.
     public function create(User $user): bool
     {
-        return $user->isAdmin();
+        return true;
     }
 
     public function update(User $user): bool
