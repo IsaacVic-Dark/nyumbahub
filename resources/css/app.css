@@ -13,6 +13,9 @@
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 
+    --font-serif:
+        'Source Serif 4', ui-serif, Georgia, 'Times New Roman', serif;
+
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
@@ -147,4 +150,47 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+/* ---------- Landing page palette (scoped to .landing) ---------- */
+.landing {
+    --lp-bg: #ffffff;
+    --lp-alt: #f5f5f2;
+    --lp-card: #ffffff;
+    --lp-ink: #14251d;
+    --lp-muted: #6b7280;
+    --lp-line: #e7e5df;
+    --lp-brand: #1f4d3a;
+    --lp-brand-fg: #ffffff;
+    --lp-soft: #e8f0ec;
+    --lp-footer: #1f4d3a;
+    --lp-footer-fg: #ffffff;
+}
+
+.dark .landing {
+    --lp-bg: #0d1612;
+    --lp-alt: #121d17;
+    --lp-card: #16241d;
+    --lp-ink: #eef4f0;
+    --lp-muted: #9db0a5;
+    --lp-line: #24352c;
+    --lp-brand: #5fae88;
+    --lp-brand-fg: #08130d;
+    --lp-soft: #1b2e24;
+    --lp-footer: #0a1410;
+    --lp-footer-fg: #e6efe9;
+}
+
+@theme inline {
+    --color-lp-bg: var(--lp-bg);
+    --color-lp-alt: var(--lp-alt);
+    --color-lp-card: var(--lp-card);
+    --color-lp-ink: var(--lp-ink);
+    --color-lp-muted: var(--lp-muted);
+    --color-lp-line: var(--lp-line);
+    --color-lp-brand: var(--lp-brand);
+    --color-lp-brand-fg: var(--lp-brand-fg);
+    --color-lp-soft: var(--lp-soft);
+    --color-lp-footer: var(--lp-footer);
+    --color-lp-footer-fg: var(--lp-footer-fg);
 }
