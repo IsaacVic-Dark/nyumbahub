@@ -13,7 +13,7 @@ class BuildingController extends Controller
 {
     public function index(SubEstate $subEstate)
     {
-        return BuildingResource::collection($subEstate->buildings()->paginate());
+        return BuildingResource::collection($subEstate->buildings()->orderBy("name")->paginate(min((int) request()->query("per_page", 15), 100)));
     }
 
     public function store(StoreBuildingRequest $request, SubEstate $subEstate)

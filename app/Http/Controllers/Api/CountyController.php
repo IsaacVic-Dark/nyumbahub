@@ -18,7 +18,7 @@ class CountyController extends Controller
             ->search($request->query('search'))
             ->withCount('towns')
             ->orderBy('name')
-            ->paginate();
+            ->paginate(min((int) request()->query("per_page", 15), 100));
 
         return CountyResource::collection($counties);
     }

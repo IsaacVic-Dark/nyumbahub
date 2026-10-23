@@ -16,7 +16,7 @@ class TownController extends Controller
 {
     public function index(County $county)
     {
-        return TownResource::collection($county->towns()->paginate());
+        return TownResource::collection($county->towns()->orderBy("name")->paginate(min((int) request()->query("per_page", 15), 100)));
     }
 
     public function store(StoreTownRequest $request, County $county)

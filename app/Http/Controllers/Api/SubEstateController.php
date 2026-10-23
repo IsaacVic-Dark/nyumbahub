@@ -13,7 +13,7 @@ class SubEstateController extends Controller
 {
     public function index(Estate $estate)
     {
-        return SubEstateResource::collection($estate->subEstates()->paginate());
+        return SubEstateResource::collection($estate->subEstates()->orderBy("name")->paginate(min((int) request()->query("per_page", 15), 100)));
     }
 
     public function store(StoreSubEstateRequest $request, Estate $estate)

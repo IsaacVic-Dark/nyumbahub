@@ -13,7 +13,7 @@ class EstateController extends Controller
 {
     public function index(Town $town)
     {
-        return EstateResource::collection($town->estates()->paginate());
+        return EstateResource::collection($town->estates()->orderBy("name")->paginate(min((int) request()->query("per_page", 15), 100)));
     }
 
     public function store(StoreEstateRequest $request, Town $town)

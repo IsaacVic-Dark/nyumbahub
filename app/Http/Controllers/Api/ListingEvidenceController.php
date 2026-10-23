@@ -36,7 +36,14 @@ class ListingEvidenceController extends Controller
     {
         $this->authorize('create', [ListingEvidence::class, $listing]);
 
-        $evidence = $listing->evidence()->create($request->validated());
+        $data = \Illuminate\Support\Arr::except($request->validated(), ['file']);
+
+        if ($request->hasFile('file')) {
+            // Private disk (storage/app/private): evidence is never publicly served.
+            $data['file_path'] = $request->file('file')->store("listing-evidence/{$listing->id}", 'local');
+        }
+
+        $evidence = $listing->evidence()->create($data);
 
         return new ListingEvidenceResource($evidence);
     }

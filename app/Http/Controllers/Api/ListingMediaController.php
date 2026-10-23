@@ -8,8 +8,8 @@ use App\Http\Resources\ListingMediaResource;
 use App\Models\Listing;
 use App\Models\ListingMedia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
-// No `update` — media is uploaded or removed, never edited in place.
 class ListingMediaController extends Controller
 {
     public function index(Request $request, Listing $listing)
@@ -19,12 +19,19 @@ class ListingMediaController extends Controller
             return ListingMediaResource::collection($listing->media()->oldest('id')->limit(1)->get());
         }
 
-        return ListingMediaResource::collection($listing->media()->paginate());
+        return ListingMediaResource::collection($listing->media()->oldest('id')->paginate(50));
     }
 
     public function store(StoreListingMediaRequest $request, Listing $listing)
     {
-        $media = $listing->media()->create($request->validated());
+        $data = Arr::except($request->validated(), ['file']);
+
+        if ($request->hasFile('file')) {
+            // Public disk -> storage/app/public/listings/{id}/..., served at /storage/... (php artisan storage:link)
+            $data['file_path'] = $request->file('file')->store("listings/{$listing->id}", 'public');
+        }
+
+        $media = $listing->media()->create($data);
 
         return new ListingMediaResource($media);
     }
