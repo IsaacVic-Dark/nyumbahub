@@ -15,7 +15,7 @@ class ListingCondition extends Model
         'listing_id', 'water', 'electricity', 'internet', 'plumbing', 'kitchen',
         'walls_floors', 'natural_light', 'noise', 'security', 'parking',
         'garbage_collection', 'has_lift', 'pest_mould_leakage_history',
-        'expected_hidden_costs',
+        'expected_hidden_costs', 'scores',
     ];
 
     protected function casts(): array
@@ -23,6 +23,7 @@ class ListingCondition extends Model
         return [
             'has_lift' => 'boolean',
             'expected_hidden_costs' => 'array',
+            'scores' => 'array',
         ];
     }
 

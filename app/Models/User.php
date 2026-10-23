@@ -38,6 +38,7 @@ class User extends Authenticatable
             'national_id_verified_at' => 'datetime',
             'is_verified_contributor' => 'boolean',
             'role' => UserRole::class,
+            'privacy_settings' => 'array',
             'password' => 'hashed',
         ];
     }
@@ -47,9 +48,30 @@ class User extends Authenticatable
         return in_array($this->role, [UserRole::Admin, UserRole::SuperAdmin], true);
     }
 
-        public function isSuperAdmin(): bool
+    public function isSuperAdmin(): bool
     {
         return $this->role === UserRole::SuperAdmin;
+    }
+
+    /** A privacy toggle from Profile -> Privacy settings (see MeController). */
+    public function privacy(string $key, mixed $default = false): mixed
+    {
+        return ($this->privacy_settings ?? [])[$key] ?? $default;
+    }
+
+    public function savedListings(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Listing::class, 'saved_listings')->withTimestamps();
+    }
+
+    public function searchAlerts(): HasMany
+    {
+        return $this->hasMany(SearchAlert::class);
+    }
+
+    public function userNotifications(): HasMany
+    {
+        return $this->hasMany(UserNotification::class);
     }
 
     public function listings(): HasMany

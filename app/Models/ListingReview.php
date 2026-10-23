@@ -14,7 +14,7 @@ class ListingReview extends Model
     protected $fillable = [
         'listing_id', 'lived_from', 'lived_to', 'pros', 'cons',
         'how_repairs_handled', 'recurring_issues', 'rent_changed_during_stay',
-        'reason_for_leaving',
+        'reason_for_leaving', 'advice',
     ];
 
     protected function casts(): array

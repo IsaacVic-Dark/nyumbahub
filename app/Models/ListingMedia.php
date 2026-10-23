@@ -11,7 +11,17 @@ class ListingMedia extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['listing_id', 'type', 'file_path'];
+    protected $fillable = ['listing_id', 'type', 'label', 'file_path'];
+
+    /** Public URL for a stored path (public disk), or the value itself if it is already a URL. */
+    public static function publicUrl(?string $path): ?string
+    {
+        if (! $path) {
+            return null;
+        }
+
+        return (str_starts_with($path, 'http') || str_starts_with($path, '/')) ? $path : '/storage/'.ltrim($path, '/');
+    }
 
     public function listing(): BelongsTo
     {
